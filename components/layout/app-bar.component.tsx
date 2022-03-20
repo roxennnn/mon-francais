@@ -70,7 +70,14 @@ const AppBarComponent = (props: Props) => {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div">
+          <Typography
+            variant="h6"
+            noWrap
+            component="div"
+            sx={{
+              marginTop: '0.3rem',
+            }}
+          >
             {getCurrentPageName()}
           </Typography>
         </div>

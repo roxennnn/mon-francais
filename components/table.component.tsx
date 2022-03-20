@@ -24,7 +24,7 @@ const TABLE_CELL = (theme: Theme) => ({
   '&:first-of-type': {
     borderLeft: 0,
   },
-  width: '10rem',
+  width: theme.breakpoints.down('sm') ? '5rem' : '10rem',
 });
 
 export default function TableComponent(props: Props) {
@@ -34,7 +34,7 @@ export default function TableComponent(props: Props) {
 
   return (
     <TableContainer component={Paper} sx={{ height: 'max-content', flex: '1' }}>
-      <Table sx={{ minWidth: 100 }} aria-label="simple table">
+      <Table sx={{ minWidth: 20 }} aria-label="simple table">
         <TableHead
           color="accent"
           sx={{
@@ -78,7 +78,6 @@ export default function TableComponent(props: Props) {
                     ...TABLE_CELL(muiTheme),
                   }}
                 >
-                  {/* <SpeakerTextComponent speak={e} /> */}
                   <span
                     style={{ cursor: 'pointer' }}
                     onClick={() => {

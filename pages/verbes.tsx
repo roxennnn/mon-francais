@@ -1,4 +1,6 @@
+import { useMediaQuery } from '@mui/material';
 import Box from '@mui/material/Box';
+import { useTheme } from '@mui/material/styles';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import type { NextPage } from 'next';
@@ -76,6 +78,8 @@ const a11yProps = (index: number) => {
 
 const Verbes: NextPage = () => {
   const [value, setValue] = React.useState(0);
+  const muiTheme = useTheme();
+  const isSmBreakpoint = useMediaQuery(muiTheme.breakpoints.down('sm'));
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -84,11 +88,15 @@ const Verbes: NextPage = () => {
     <Box sx={{ width: '100%' }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs
+          sx={{
+            maxWidth: '100vw',
+          }}
           value={value}
           indicatorColor="secondary"
           onChange={handleChange}
           variant="scrollable"
-          scrollButtons="auto"
+          scrollButtons={isSmBreakpoint ? true : 'auto'}
+          allowScrollButtonsMobile
           aria-label="scrollable auto tabs example"
         >
           {TABS.map((e, index: number) => (

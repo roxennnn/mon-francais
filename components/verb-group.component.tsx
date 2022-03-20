@@ -64,7 +64,7 @@ const VerbGroupComponent = (props: Props) => {
     const CONJUGATIONS = 12;
     let conjPerTable = 6;
     if (isSmBreakpoint) {
-      conjPerTable = 3;
+      conjPerTable = 2;
     } else if (isMdBreakpoint) {
       conjPerTable = 3;
     } else if (isLgBreakpoint) {
@@ -92,11 +92,18 @@ const VerbGroupComponent = (props: Props) => {
   return (
     <main
       style={{
-        margin: '3rem',
+        margin: isSmBreakpoint ? '1rem 1.5rem 2rem' : '3rem',
         marginTop: '1rem',
       }}
     >
-      <Stack direction="row" spacing={1} sx={{ marginBottom: 2 }}>
+      <Stack
+        direction="row"
+        // spacing={1}
+        sx={{
+          marginBottom: 2,
+          flexWrap: 'wrap',
+        }}
+      >
         {verbs.map((e: string) => (
           <Chip
             key={e}
@@ -104,6 +111,10 @@ const VerbGroupComponent = (props: Props) => {
             variant={active === e ? 'filled' : 'outlined'}
             onClick={() => {
               handleClick(e);
+            }}
+            sx={{
+              marginBottom: 1,
+              marginLeft: 1,
             }}
           />
         ))}
@@ -151,7 +162,7 @@ const VerbGroupComponent = (props: Props) => {
             {...getVerbData(active, e[0], e[1])}
           />
         ))}
-        <Stack direction="row" spacing={4}>
+        <Stack direction={isSmBreakpoint ? 'column' : 'row'} spacing={4}>
           <TableComponent {...getVerbData(active, 12, 14)} />
           {active === 'falloir' ? (
             <div style={{ flex: '1 1 0' }}></div>

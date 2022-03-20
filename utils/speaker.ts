@@ -10,6 +10,7 @@ export const speakHandler = (
   const selectedOption = lang;
   const voices = synth.getVoices();
 
+  // Find language
   Array(voices.length)
     .fill(0)
     .forEach((_, index: number) => {
@@ -17,7 +18,11 @@ export const speakHandler = (
         utterThis.voice = voices[index];
       }
     });
-  utterThis.lang = utterThis.voice.lang;
+
+  // Redundant language for Android
+  utterThis.lang = utterThis?.voice?.lang || lang;
+
+  // Speak
   synth.speak(utterThis);
 };
 
