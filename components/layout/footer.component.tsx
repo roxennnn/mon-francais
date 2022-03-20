@@ -11,7 +11,7 @@ const FooterComponent = (props: Props) => {
         target="_blank"
         rel="noopener noreferrer"
       >
-        Made with fun by roxennnn
+        Fait avec plaisir par roxennnn
       </a>
     </footer>
   );

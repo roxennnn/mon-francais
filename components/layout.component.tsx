@@ -1,5 +1,4 @@
 import { Campaign, Handyman, Password } from '@mui/icons-material';
-import { PaletteMode } from '@mui/material';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
 import Toolbar from '@mui/material/Toolbar';
@@ -19,8 +18,6 @@ const MENU_CONFIG = [
 
 interface Props {
   children: React.ReactChild;
-  toggleColorMode: () => void;
-  colorMode: PaletteMode;
 }
 
 const LayoutComponent = (props: Props) => {
@@ -35,11 +32,7 @@ const LayoutComponent = (props: Props) => {
       <HeadComponent />
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
-        <AppBarComponent
-          handleDrawerToggle={handleDrawerToggle}
-          toggleColorMode={props.toggleColorMode}
-          colorMode={props.colorMode}
-        />
+        <AppBarComponent handleDrawerToggle={handleDrawerToggle} />
         <DrawerComponent
           open={mobileOpen}
           handleDrawerToggle={handleDrawerToggle}

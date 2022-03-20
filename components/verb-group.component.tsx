@@ -1,15 +1,16 @@
-import { Chip, Stack } from '@mui/material';
+import { Chip, Stack, Typography, useMediaQuery } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import React, { useEffect, useState } from 'react';
 import {
-  COMPOSITE_VERBS,
-  IConjugation,
-  IKeyLabel,
-  LEFT_MOST_VERB_COLUMN,
-  VERBS,
-  VERB_COLUMNS,
-  VERB_PRONOUNS,
-} from '../constants/verbs';
+  getPastInfinitive,
+  getVerbComment,
+  getVerbData,
+  getVerbDefinition,
+  getVerbExample,
+  getVerbParticipleData,
+} from '../utils/verbs';
 import TableComponent from './table.component';
+import VerbListComponent from './verb-list.component';
 
 type Props = {
   verbs: string[];
@@ -17,7 +18,31 @@ type Props = {
 
 const VerbGroupComponent = (props: Props) => {
   const { verbs } = props;
-  const [active, setActive] = useState<string>();
+  const [active, setActive] = useState<string>('');
+
+  const muiTheme = useTheme();
+  const isLgBreakpoint = useMediaQuery(muiTheme.breakpoints.down('lg'));
+  const isMdBreakpoint = useMediaQuery(muiTheme.breakpoints.down('md'));
+  const isSmBreakpoint = useMediaQuery(muiTheme.breakpoints.down('sm'));
+
+  const getIndexesPair = (): [number, number][] => {
+    const CONJUGATIONS = 12;
+    let conjPerTable = 6;
+    if (isSmBreakpoint) {
+      conjPerTable = 2;
+    } else if (isMdBreakpoint) {
+      conjPerTable = 3;
+    } else if (isLgBreakpoint) {
+      conjPerTable = 4;
+    }
+
+    return Array(CONJUGATIONS / conjPerTable)
+      .fill(0)
+      .map((_, index: number) => [
+        index * conjPerTable,
+        (index + 1) * conjPerTable,
+      ]);
+  };
 
   const handleClick = (e: string) => {
     setActive(e);
@@ -29,55 +54,14 @@ const VerbGroupComponent = (props: Props) => {
     }
   }, [verbs]);
 
-  const getVerbData = (
-    startIndex: number,
-    endIndex: number
-  ): { columns: IKeyLabel[]; data: string[][] } => {
-    const slicedColumns = VERB_COLUMNS.slice(startIndex, endIndex);
-    const columns = [LEFT_MOST_VERB_COLUMN, ...slicedColumns];
-    const data: string[][] = [];
-
-    if (!!active) {
-      const currentVerb = VERBS[active];
-      const conjugations = [VERB_PRONOUNS];
-      slicedColumns.forEach((e: IKeyLabel) => {
-        conjugations.push(currentVerb[e.key as keyof IConjugation] as string[]);
-      });
-
-      // Make matrix transpose
-      Array(VERB_PRONOUNS.length)
-        .fill(0)
-        .forEach((_, colIndex: number) => {
-          const dataArr: string[] = [];
-          conjugations.forEach((e) => {
-            dataArr.push(
-              e[colIndex] +
-                (COMPOSITE_VERBS.includes(slicedColumns[colIndex]?.key)
-                  ? ` ${currentVerb.participles.past}`
-                  : '')
-            );
-          });
-          data.push(dataArr);
-        });
-
-      return {
-        columns,
-        data,
-      };
-    }
-    return {
-      columns,
-      data,
-    };
-  };
-
   return (
     <main
       style={{
-        margin: '1rem',
+        margin: '3rem',
+        marginTop: '1rem',
       }}
     >
-      <Stack direction="row" spacing={1} sx={{ marginBottom: '2rem' }}>
+      <Stack direction="row" spacing={1} sx={{ marginBottom: 2 }}>
         {verbs.map((e: string) => (
           <Chip
             key={e}
@@ -89,16 +73,59 @@ const VerbGroupComponent = (props: Props) => {
           />
         ))}
       </Stack>
+
+      <Typography sx={{ marginTop: '0.5rem' }} variant="h3">
+        {active}
+      </Typography>
+
+      <Typography variant="subtitle1">{getVerbDefinition(active)}</Typography>
+      <Typography variant="subtitle2">
+        <i>{getVerbExample(active)}</i>
+      </Typography>
+
       <Stack
         direction="column"
         spacing={4}
         sx={{
-          margin: '0rem 3rem',
+          marginTop: 2,
         }}
       >
-        <TableComponent {...getVerbData(0, 6)} />
-        <TableComponent {...getVerbData(6, 12)} />
+        {getIndexesPair().map((e: [number, number]) => (
+          <TableComponent
+            key={String(e)}
+            {...getVerbData(active, e[0], e[1])}
+          />
+        ))}
+        <Stack direction="row" spacing={4}>
+          <TableComponent {...getVerbData(active, 12, 14)} />
+          {active === 'falloir' ? (
+            <div style={{ flex: '1 1 0' }}></div>
+          ) : (
+            <TableComponent {...getVerbData(active, 14, 16, true)} />
+          )}
+        </Stack>
+
+        <Stack sx={{ marginTop: '1rem !important' }}>
+          <VerbListComponent
+            data={getVerbParticipleData(active)}
+            title="Participles"
+          />
+          <VerbListComponent
+            data={[
+              ['Present:', active],
+              ['Past:', getPastInfinitive(active)],
+            ]}
+            title="Infinitives"
+          />
+        </Stack>
       </Stack>
+
+      {getVerbComment(active) && (
+        <>
+          <Typography variant="h4">Comment</Typography>
+          <Typography variant="subtitle1">{getVerbComment(active)}</Typography>
+        </>
+      )}
     </main>
   );
 };

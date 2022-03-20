@@ -1,24 +1,24 @@
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import MenuIcon from '@mui/icons-material/Menu';
-import { PaletteMode } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { useRouter } from 'next/router';
 import * as React from 'react';
+import { ColorModeContext } from '../../pages/_app';
 
 const drawerWidth = 240;
 
 interface Props {
   handleDrawerToggle: () => void;
-  toggleColorMode: () => void;
-  colorMode: PaletteMode;
 }
 
 const AppBarComponent = (props: Props) => {
   const router = useRouter();
+
+  const themeContext = React.useContext(ColorModeContext);
 
   const getCurrentPageName = () => {
     switch (router.route) {
@@ -64,10 +64,10 @@ const AppBarComponent = (props: Props) => {
         </div>
         <IconButton
           sx={{ ml: 1 }}
-          onClick={props.toggleColorMode}
+          onClick={themeContext.toggleColorMode}
           color="inherit"
         >
-          {props.colorMode === 'dark' ? (
+          {themeContext.colorMode === 'dark' ? (
             <Brightness7Icon />
           ) : (
             <Brightness4Icon />
