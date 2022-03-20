@@ -10,6 +10,7 @@ import * as React from 'react';
 import { FRANCE_BLUE, FRANCE_BLUE_LIGHT } from '../constants/colors';
 import { IKeyLabel } from '../models/general';
 import { ColorModeContext } from '../pages/_app';
+import { SpeakerTextComponent } from './speaker.component';
 
 type Props = {
   columns: IKeyLabel[];
@@ -77,7 +78,7 @@ export default function TableComponent(props: Props) {
                     ...TABLE_CELL(muiTheme),
                   }}
                 >
-                  {e}
+                  <SpeakerTextComponent speak={e} />
                 </TableCell>
               ))}
             </TableRow>

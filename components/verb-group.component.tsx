@@ -1,4 +1,11 @@
-import { Chip, Stack, Typography, useMediaQuery } from '@mui/material';
+import {
+  Chip,
+  Stack,
+  SxProps,
+  Typography,
+  TypographyProps,
+  useMediaQuery,
+} from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import React, { useEffect, useState } from 'react';
 import {
@@ -9,8 +16,28 @@ import {
   getVerbExample,
   getVerbParticipleData,
 } from '../utils/verbs';
+import { SpeakerButtonComponent } from './speaker.component';
 import TableComponent from './table.component';
 import VerbListComponent from './verb-list.component';
+
+type TypographySpeakerProps = {
+  text: string;
+  spacing?: number;
+  typographyProps?: TypographyProps;
+  speakerButtonSx?: SxProps;
+};
+
+const TypographySpeaker = (props) => {
+  return (
+    <Stack direction="row" alignItems="center" spacing={props.spacing || 0}>
+      <Typography {...props.typographyProps}>{props.text}</Typography>
+      <SpeakerButtonComponent
+        speak={props.text}
+        sx={{ ...props.speakerButtonSx }}
+      />
+    </Stack>
+  );
+};
 
 type Props = {
   verbs: string[];
@@ -29,7 +56,7 @@ const VerbGroupComponent = (props: Props) => {
     const CONJUGATIONS = 12;
     let conjPerTable = 6;
     if (isSmBreakpoint) {
-      conjPerTable = 2;
+      conjPerTable = 3;
     } else if (isMdBreakpoint) {
       conjPerTable = 3;
     } else if (isLgBreakpoint) {
@@ -74,14 +101,34 @@ const VerbGroupComponent = (props: Props) => {
         ))}
       </Stack>
 
-      <Typography sx={{ marginTop: '0.5rem' }} variant="h3">
-        {active}
-      </Typography>
+      <TypographySpeaker
+        text={active}
+        spacing={1}
+        typographyProps={{
+          sx: { marginTop: '0.5rem' },
+          variant: 'h3',
+        }}
+        speakerButtonSx={{ marginTop: '0.8rem !important' }}
+      />
 
-      <Typography variant="subtitle1">{getVerbDefinition(active)}</Typography>
-      <Typography variant="subtitle2">
-        <i>{getVerbExample(active)}</i>
-      </Typography>
+      <TypographySpeaker
+        text={getVerbDefinition(active)}
+        typographyProps={{
+          variant: 'subtitle1',
+        }}
+        speakerButtonSx={{ transform: 'scale(0.8)' }}
+      />
+
+      <TypographySpeaker
+        text={getVerbExample(active)}
+        typographyProps={{
+          variant: 'subtitle2',
+          sx: {
+            fontStyle: 'italic',
+          },
+        }}
+        speakerButtonSx={{ transform: 'scale(0.8)' }}
+      />
 
       <Stack
         direction="column"
