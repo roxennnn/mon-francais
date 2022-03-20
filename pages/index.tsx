@@ -9,4 +9,13 @@ const Home: NextPage = () => {
   );
 };
 
+export async function getServerSideProps() {
+  return {
+    redirect: {
+      destination: '/verbes',
+      permanent: false,
+    },
+  };
+}
+
 export default Home;
