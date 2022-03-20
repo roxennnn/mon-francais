@@ -1,6 +1,7 @@
 import { VolumeUp } from '@mui/icons-material';
 import { Box, SxProps } from '@mui/material';
 import React, { useContext } from 'react';
+import { isMobile } from 'react-device-detect';
 import { SayButton } from 'react-say-fork';
 import { ColorModeContext } from '../pages/_app';
 import { purifyText } from '../utils/verbs';
@@ -10,9 +11,6 @@ type Props = {
   children: React.ReactChild;
   sx?: SxProps;
 };
-
-export const isMobileDevice = () =>
-  /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
 const SpeakerComponent = (props: Props) => {
   const voiceSelector = React.useCallback(
@@ -52,7 +50,7 @@ type ComponentProps = {
 };
 
 export const SpeakerTextComponent = (props: ComponentProps) => {
-  return isMobileDevice ? (
+  return isMobile ? (
     <div>{props.speak}</div>
   ) : (
     <SpeakerComponent {...props}>{props.speak}</SpeakerComponent>
@@ -60,7 +58,7 @@ export const SpeakerTextComponent = (props: ComponentProps) => {
 };
 
 export const SpeakerButtonComponent = (props: ComponentProps) => {
-  return isMobileDevice ? (
+  return isMobile ? (
     <></>
   ) : (
     <SpeakerComponent {...props}>
