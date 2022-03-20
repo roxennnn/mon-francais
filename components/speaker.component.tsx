@@ -4,7 +4,6 @@ import React, { useContext } from 'react';
 import { isMobile } from 'react-device-detect';
 import { SayButton } from 'react-say-fork';
 import { ColorModeContext } from '../pages/_app';
-import { purifyText } from '../utils/verbs';
 
 type Props = {
   speak: string;
@@ -35,7 +34,7 @@ const SpeakerComponent = (props: Props) => {
         ...(props.sx || {}),
       }}
     >
-      <SayButton text={purifyText(props.speak)} voice={voiceSelector}>
+      <SayButton text={props.speak} voice={voiceSelector}>
         {props.children}
       </SayButton>
     </Box>
@@ -60,20 +59,17 @@ export const SpeakerTextComponent = (props: ComponentProps) => {
 export const SpeakerButtonComponent = (props: ComponentProps) => {
   const clickHandler = (event) => {
     event.preventDefault();
-    const synth = window.speechSynthesis;
+    const synth =
+      window.speechSynthesis || (window as any)?.webkitSpeechSynthesis;
 
     const utterThis = new SpeechSynthesisUtterance(props.speak);
     const selectedOption = 'fr-FR';
-    // const voiceSelector = React.useCallback(
-    //   (voices) => [...voices].find((v) => v.lang === 'fr-FR'),
-    //   []
-    // );
     const voices = synth.getVoices();
 
     Array(voices.length)
       .fill(0)
       .forEach((_, index: number) => {
-        if (voices[index].name === selectedOption) {
+        if (voices[index]?.lang === selectedOption) {
           utterThis.voice = voices[index];
         }
       });
@@ -85,8 +81,11 @@ export const SpeakerButtonComponent = (props: ComponentProps) => {
       <VolumeUp />
     </IconButton>
   );
+
   // return isMobile ? (
-  //   <></>
+  //   <IconButton onClick={clickHandler}>
+  //     <VolumeUp />
+  //   </IconButton>
   // ) : (
   //   <SpeakerComponent {...props}>
   //     <VolumeUp />

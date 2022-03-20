@@ -1,6 +1,6 @@
 import { List, ListItem, ListItemText, Stack, Typography } from '@mui/material';
 import React from 'react';
-import SpeakerComponent from './speaker.component';
+import { speakHandler } from '../utils/speaker';
 
 const VerbListItemComponent = (props: { value: string; label: string }) => {
   return (
@@ -15,9 +15,17 @@ const VerbListItemComponent = (props: { value: string; label: string }) => {
         alignItems="flex-start"
         sx={{ paddingTop: 0, paddingBottom: 0 }}
       >
-        <SpeakerComponent speak={props.value}>
-          <ListItemText primary={props.value} />
-        </SpeakerComponent>
+        {/* <SpeakerComponent speak={props.value}> */}
+        <ListItemText
+          primary={props.value}
+          sx={{
+            cursor: 'pointer',
+          }}
+          onClick={() => {
+            speakHandler(props.value, window);
+          }}
+        />
+        {/* </SpeakerComponent> */}
       </ListItem>
     </Stack>
   );

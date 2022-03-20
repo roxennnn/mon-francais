@@ -136,5 +136,3 @@ export const getVerbExample = (active: string): string =>
 
 export const getVerbComment = (active: string): string =>
   !!active ? VERBS[active]?.comment || '' : '';
-
-export const purifyText = (text: string): string => text.split(' -').join('');

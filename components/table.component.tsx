@@ -10,7 +10,7 @@ import * as React from 'react';
 import { FRANCE_BLUE, FRANCE_BLUE_LIGHT } from '../constants/colors';
 import { IKeyLabel } from '../models/general';
 import { ColorModeContext } from '../pages/_app';
-import { SpeakerTextComponent } from './speaker.component';
+import { speakHandler } from '../utils/speaker';
 
 type Props = {
   columns: IKeyLabel[];
@@ -78,7 +78,15 @@ export default function TableComponent(props: Props) {
                     ...TABLE_CELL(muiTheme),
                   }}
                 >
-                  <SpeakerTextComponent speak={e} />
+                  {/* <SpeakerTextComponent speak={e} /> */}
+                  <span
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => {
+                      speakHandler(e, window);
+                    }}
+                  >
+                    {e}
+                  </span>
                 </TableCell>
               ))}
             </TableRow>

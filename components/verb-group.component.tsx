@@ -1,5 +1,7 @@
+import { VolumeUp } from '@mui/icons-material';
 import {
   Chip,
+  IconButton,
   Stack,
   SxProps,
   Typography,
@@ -8,6 +10,7 @@ import {
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import React, { useEffect, useState } from 'react';
+import { speakHandler } from '../utils/speaker';
 import {
   getPastInfinitive,
   getVerbComment,
@@ -16,7 +19,6 @@ import {
   getVerbExample,
   getVerbParticipleData,
 } from '../utils/verbs';
-import { SpeakerButtonComponent } from './speaker.component';
 import TableComponent from './table.component';
 import VerbListComponent from './verb-list.component';
 
@@ -27,14 +29,17 @@ type TypographySpeakerProps = {
   speakerButtonSx?: SxProps;
 };
 
-const TypographySpeaker = (props) => {
+const TypographySpeaker = (props: TypographySpeakerProps) => {
   return (
     <Stack direction="row" alignItems="center" spacing={props.spacing || 0}>
       <Typography {...props.typographyProps}>{props.text}</Typography>
-      <SpeakerButtonComponent
-        speak={props.text}
-        sx={{ ...props.speakerButtonSx }}
-      />
+      <IconButton
+        onClick={() => {
+          speakHandler(props.text, window);
+        }}
+      >
+        <VolumeUp />
+      </IconButton>
     </Stack>
   );
 };
