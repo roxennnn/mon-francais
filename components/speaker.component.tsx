@@ -11,6 +11,9 @@ type Props = {
   sx?: SxProps;
 };
 
+export const isMobileDevice = () =>
+  /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
 const SpeakerComponent = (props: Props) => {
   const voiceSelector = React.useCallback(
     (voices) => [...voices].find((v) => v.lang === 'fr-FR'),
@@ -49,11 +52,17 @@ type ComponentProps = {
 };
 
 export const SpeakerTextComponent = (props: ComponentProps) => {
-  return <SpeakerComponent {...props}>{props.speak}</SpeakerComponent>;
+  return isMobileDevice ? (
+    <div>{props.speak}</div>
+  ) : (
+    <SpeakerComponent {...props}>{props.speak}</SpeakerComponent>
+  );
 };
 
 export const SpeakerButtonComponent = (props: ComponentProps) => {
-  return (
+  return isMobileDevice ? (
+    <></>
+  ) : (
     <SpeakerComponent {...props}>
       <VolumeUp />
     </SpeakerComponent>
