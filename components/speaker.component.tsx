@@ -1,5 +1,5 @@
 import { VolumeUp } from '@mui/icons-material';
-import { Box, SxProps } from '@mui/material';
+import { Box, IconButton, SxProps } from '@mui/material';
 import React, { useContext } from 'react';
 import { isMobile } from 'react-device-detect';
 import { SayButton } from 'react-say-fork';
@@ -58,11 +58,38 @@ export const SpeakerTextComponent = (props: ComponentProps) => {
 };
 
 export const SpeakerButtonComponent = (props: ComponentProps) => {
-  return isMobile ? (
-    <></>
-  ) : (
-    <SpeakerComponent {...props}>
+  const clickHandler = (event) => {
+    event.preventDefault();
+    const synth = window.speechSynthesis;
+
+    const utterThis = new SpeechSynthesisUtterance(props.speak);
+    const selectedOption = 'fr-FR';
+    // const voiceSelector = React.useCallback(
+    //   (voices) => [...voices].find((v) => v.lang === 'fr-FR'),
+    //   []
+    // );
+    const voices = synth.getVoices();
+
+    Array(voices.length)
+      .fill(0)
+      .forEach((_, index: number) => {
+        if (voices[index].name === selectedOption) {
+          utterThis.voice = voices[index];
+        }
+      });
+    synth.speak(utterThis);
+  };
+
+  return (
+    <IconButton onClick={clickHandler}>
       <VolumeUp />
-    </SpeakerComponent>
+    </IconButton>
   );
+  // return isMobile ? (
+  //   <></>
+  // ) : (
+  //   <SpeakerComponent {...props}>
+  //     <VolumeUp />
+  //   </SpeakerComponent>
+  // );
 };
