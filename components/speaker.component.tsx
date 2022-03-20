@@ -1,7 +1,7 @@
 import { VolumeUp } from '@mui/icons-material';
 import { Box, SxProps } from '@mui/material';
 import React, { useContext } from 'react';
-import { SayButton } from 'react-say';
+import { SayButton } from 'react-say-fork';
 import { ColorModeContext } from '../pages/_app';
 import { purifyText } from '../utils/verbs';
 
@@ -34,7 +34,7 @@ const SpeakerComponent = (props: Props) => {
         ...(props.sx || {}),
       }}
     >
-      <SayButton speak={purifyText(props.speak)} voice={voiceSelector}>
+      <SayButton text={purifyText(props.speak)} voice={voiceSelector}>
         {props.children}
       </SayButton>
     </Box>
