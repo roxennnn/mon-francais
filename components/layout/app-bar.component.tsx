@@ -1,12 +1,15 @@
+import { Download } from '@mui/icons-material';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import MenuIcon from '@mui/icons-material/Menu';
+import { Button } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { useRouter } from 'next/router';
 import * as React from 'react';
+import { useAddToHomescreenPrompt } from '../../hooks/add-to-home.hook';
 import { ColorModeContext } from '../../pages/_app';
 
 const drawerWidth = 240;
@@ -35,6 +38,15 @@ const AppBarComponent = (props: Props) => {
     }
   };
 
+  const [prompt, promptToInstall] = useAddToHomescreenPrompt();
+  const [isVisible, setVisibleState] = React.useState(false);
+
+  React.useEffect(() => {
+    if (prompt) {
+      setVisibleState(true);
+    }
+  }, [prompt]);
+
   return (
     <AppBar
       position="fixed"
@@ -62,17 +74,30 @@ const AppBarComponent = (props: Props) => {
             {getCurrentPageName()}
           </Typography>
         </div>
-        <IconButton
-          sx={{ ml: 1 }}
-          onClick={themeContext.toggleColorMode}
-          color="inherit"
-        >
-          {themeContext.colorMode === 'dark' ? (
-            <Brightness7Icon />
-          ) : (
-            <Brightness4Icon />
+        <div>
+          {isVisible && (
+            <Button
+              variant="contained"
+              color="secondary"
+              sx={{ borderRadius: 4 }}
+              startIcon={<Download />}
+              onClick={promptToInstall}
+            >
+              Install
+            </Button>
           )}
-        </IconButton>
+          <IconButton
+            sx={{ ml: 1 }}
+            onClick={themeContext.toggleColorMode}
+            color="inherit"
+          >
+            {themeContext.colorMode === 'dark' ? (
+              <Brightness7Icon />
+            ) : (
+              <Brightness4Icon />
+            )}
+          </IconButton>
+        </div>
       </Toolbar>
     </AppBar>
   );

@@ -8,7 +8,6 @@ import {
   FRANCE_BLUE_LIGHT,
   FRANCE_RED,
 } from '../constants/colors';
-import { useAddToHomescreenPrompt } from '../hooks/add-to-home.hook';
 import '../styles/globals.css';
 
 export const ColorModeContext = React.createContext({
@@ -49,31 +48,11 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
   // Update the theme only if the mode changes
   const theme = React.useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
 
-  // PWA
-  const [prompt, promptToInstall] = useAddToHomescreenPrompt();
-  const [isVisible, setVisibleState] = React.useState(false);
-  const hide = () => setVisibleState(false);
-
-  React.useEffect(() => {
-    if (prompt) {
-      setVisibleState(true);
-    }
-  }, [prompt]);
-
   return (
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
         <LayoutComponent>
-          <>
-            {isVisible && (
-              <div onClick={hide}>
-                <button onClick={hide}>Close</button>
-                Hello! Wanna add to homescreen?
-                <button onClick={promptToInstall}>Add to homescreen</button>
-              </div>
-            )}
-            <Component {...pageProps} />
-          </>
+          <Component {...pageProps} />
         </LayoutComponent>
       </ThemeProvider>
     </ColorModeContext.Provider>
