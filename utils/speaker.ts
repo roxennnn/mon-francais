@@ -17,6 +17,7 @@ export const speakHandler = (
         utterThis.voice = voices[index];
       }
     });
+  utterThis.lang = utterThis.voice.lang;
   synth.speak(utterThis);
 };
 
