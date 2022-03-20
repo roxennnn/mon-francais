@@ -37,6 +37,9 @@ const TypographySpeaker = (props: TypographySpeakerProps) => {
         onClick={() => {
           speakHandler(props.text, window);
         }}
+        sx={{
+          ...props.speakerButtonSx,
+        }}
       >
         <VolumeUp />
       </IconButton>
@@ -113,7 +116,7 @@ const VerbGroupComponent = (props: Props) => {
           sx: { marginTop: '0.5rem' },
           variant: 'h3',
         }}
-        speakerButtonSx={{ marginTop: '0.8rem !important' }}
+        speakerButtonSx={{ marginTop: '0.6rem !important' }}
       />
 
       <TypographySpeaker

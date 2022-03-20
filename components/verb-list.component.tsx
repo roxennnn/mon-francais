@@ -15,7 +15,6 @@ const VerbListItemComponent = (props: { value: string; label: string }) => {
         alignItems="flex-start"
         sx={{ paddingTop: 0, paddingBottom: 0 }}
       >
-        {/* <SpeakerComponent speak={props.value}> */}
         <ListItemText
           primary={props.value}
           sx={{
@@ -25,7 +24,6 @@ const VerbListItemComponent = (props: { value: string; label: string }) => {
             speakHandler(props.value, window);
           }}
         />
-        {/* </SpeakerComponent> */}
       </ListItem>
     </Stack>
   );

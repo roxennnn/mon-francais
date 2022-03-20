@@ -13,7 +13,7 @@ export const speakHandler = (
   Array(voices.length)
     .fill(0)
     .forEach((_, index: number) => {
-      if (voices[index]?.lang === selectedOption) {
+      if (voices[index]?.lang.replace('_', '-') === selectedOption) {
         utterThis.voice = voices[index];
       }
     });
