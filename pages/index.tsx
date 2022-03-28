@@ -21,6 +21,7 @@ const Home: NextPage = () => {
           <TextField
             label=""
             variant="outlined"
+            placeholder="Tapez la phrase que vous voulez prononcer"
             rows={4}
             maxRows={6}
             multiline
