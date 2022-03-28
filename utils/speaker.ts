@@ -26,4 +26,4 @@ export const speakHandler = (
   synth.speak(utterThis);
 };
 
-export const purifyText = (text: string): string => text.split(' -').join('');
+export const purifyText = (text: string): string => text?.split(' -')?.join('');

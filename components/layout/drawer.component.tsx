@@ -8,6 +8,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import * as React from 'react';
 import { FRANCE_RED, FRANCE_RED_DARK } from '../../constants/colors';
@@ -32,10 +33,16 @@ const DrawerComponent = (props: Props) => {
 
   const drawer = (
     <>
-      <Toolbar>
-        <Typography variant="h6" noWrap component="div">
-          🇫🇷 Mon Français
-        </Typography>
+      <Toolbar
+        sx={{
+          cursor: 'pointer',
+        }}
+      >
+        <Link href="/" passHref>
+          <Typography variant="h6" noWrap component="div">
+            🇫🇷 Mon Français
+          </Typography>
+        </Link>
       </Toolbar>
       <Divider />
       <List>
